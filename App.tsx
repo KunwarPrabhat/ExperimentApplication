@@ -48,7 +48,7 @@ function Ground() {
 function Character({ moveVectorRef }: { moveVectorRef: React.RefObject<THREE.Vector2> }) {
   const idleFbx = useFBX(ASSETS.idle);
   const runFbx = useFBX(ASSETS.run);
-  
+
   const groupRef = useRef<THREE.Group>(null!);
   const mixerRef = useRef<THREE.AnimationMixer | null>(null);
   const actionsRef = useRef<{ [key: string]: THREE.AnimationAction }>({});
@@ -61,11 +61,11 @@ function Character({ moveVectorRef }: { moveVectorRef: React.RefObject<THREE.Vec
         if ((child as THREE.Mesh).isMesh) {
           const mesh = child as THREE.Mesh;
           const oldMat = mesh.material;
-          
+
           const createSafeMaterial = (mat: any) => {
             let color = new THREE.Color('#ffffff');
             const name = child.name.toLowerCase();
-            
+
             // Intuitively paint character body parts based on sub-mesh keywords
             if (name.includes('skin') || name.includes('face') || name.includes('body') || name.includes('head') || name.includes('hand') || name.includes('arm') || name.includes('leg') || name.includes('neck') || name.includes('torso')) {
               color.set('#ffcc99'); // Nice peach skin
@@ -91,9 +91,8 @@ function Character({ moveVectorRef }: { moveVectorRef: React.RefObject<THREE.Vec
 
             // Exclude broken maps that cause black texture errors in native EXGL
             // const validMap = (mat.map && mat.map.image) ? mat.map : null;
-            
+
             const validMap = null;
-            
             return new THREE.MeshStandardMaterial({
               color: color,
               map: validMap,
@@ -163,12 +162,12 @@ function Character({ moveVectorRef }: { moveVectorRef: React.RefObject<THREE.Vec
 
       // Mapped movements perfectly! UP goes FORWARD, RIGHT goes RIGHT. No inversions.
       moveDirection.addScaledVector(forward, moveVector.y)
-                   .addScaledVector(right, moveVector.x);
+        .addScaledVector(right, moveVector.x);
 
       if (moveDirection.lengthSq() > 0) {
         moveDirection.normalize();
         const deltaPos = moveDirection.clone().multiplyScalar(speed);
-        
+
         groupRef.current.position.add(deltaPos);
         state.camera.position.add(deltaPos); // Smoothly pan camera alongside character
 
@@ -218,7 +217,7 @@ function Character({ moveVectorRef }: { moveVectorRef: React.RefObject<THREE.Vec
 // 3. Main App Layout
 export default function App() {
   const [gameState, setGameState] = useState<'HOME' | 'PLAYING'>('HOME');
-  
+
   // Decoupled Ref avoids massive 60FPS re-rendering/garbage collection overhead on App state
   const moveVectorRef = useRef(new THREE.Vector2(0, 0));
 
@@ -236,13 +235,13 @@ export default function App() {
     <GestureHandlerRootView style={styles.container}>
       <Canvas>
         <color attach="background" args={['#87CEEB']} /> {/* Sky Blue Background */}
-        
+
         <PerspectiveCamera makeDefault position={[0, 5, 10]} />
         <OrbitControls makeDefault enableZoom={true} enablePan={false} />
-        
+
         <ambientLight intensity={0.9} />
         <directionalLight position={[10, 20, 10]} intensity={1.6} />
-        
+
         <Suspense fallback={null}>
           <Ground />
           <Character moveVectorRef={moveVectorRef} />
@@ -252,7 +251,7 @@ export default function App() {
       {/* Perfectly layered Joystick Container */}
       <View style={styles.joystickContainer}>
         <ReactNativeJoystick
-          color="#00000080"
+          color="#555555"
           radius={50}
           onMove={(data: any) => {
             if (data && data.angle) {
@@ -275,11 +274,11 @@ const styles = StyleSheet.create({
   homeContainer: { flex: 1, backgroundColor: '#1a1a1a', justifyContent: 'center', alignItems: 'center' },
   playButton: { backgroundColor: '#e11d48', paddingHorizontal: 50, paddingVertical: 20, borderRadius: 30 },
   playText: { color: 'white', fontSize: 24, fontWeight: 'bold', letterSpacing: 4 },
-  
+
   // High z-index centered container to prevent collapsing or hiding behind Canvas
-  joystickContainer: { 
-    position: 'absolute', 
-    bottom: 50, 
+  joystickContainer: {
+    position: 'absolute',
+    bottom: 50,
     left: 0,
     right: 0,
     height: 120,
