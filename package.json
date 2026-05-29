@@ -3,20 +3,31 @@
   "version": "1.0.0",
   "main": "index.ts",
   "dependencies": {
+    "@expo/metro-config": "~56.0.0",
+    "@korsolutions/react-native-joystick": "^2.0.1",
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.6.1",
     "expo": "~56.0.6",
+    "expo-gl": "~56.0.5",
     "expo-status-bar": "~56.0.4",
     "react": "19.2.3",
-    "react-native": "0.85.3"
+    "react-native": "0.85.3",
+    "react-native-gesture-handler": "~2.31.1",
+    "three": "0.170.0"
   },
   "devDependencies": {
     "@types/react": "~19.2.2",
+    "@types/three": "^0.184.1",
     "typescript": "~6.0.3"
   },
   "scripts": {
     "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
+    "android": "expo run:android",
+    "ios": "expo run:ios",
     "web": "expo start --web"
+  },
+  "overrides": {
+  "three": "$three"
   },
   "private": true
 }
