@@ -90,8 +90,10 @@ function Character({ moveVectorRef }: { moveVectorRef: React.RefObject<THREE.Vec
             }
 
             // Exclude broken maps that cause black texture errors in native EXGL
-            const validMap = (mat.map && mat.map.image) ? mat.map : null;
-
+            // const validMap = (mat.map && mat.map.image) ? mat.map : null;
+            
+            const validMap = null;
+            
             return new THREE.MeshStandardMaterial({
               color: color,
               map: validMap,
